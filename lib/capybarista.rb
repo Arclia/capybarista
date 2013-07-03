@@ -1,7 +1,42 @@
 
 module Capybarista
 
+  module Finders
+
+    def all(*args)
+      basis.all(*args).map{|f| Capybarista::Element.for(f) }
+    end
+
+    def find(*args)
+      Capybarista::Element.for basis.find(*args)
+    end
+
+    def find_button(*args)
+      Capybarista::Element.for basis.find_button(*args)
+    end
+
+    def find_by_id(*args)
+      Capybarista::Element.for basis.find_by_id(*args)
+    end
+
+    def find_field(*args)
+      Capybarista::Element.for basis.find_field(*args)
+    end
+
+    def find_link(*args)
+      Capybarista::Element.for basis.find_link(*args)
+    end
+
+    def first(*args)
+      Capybarista::Element.for basis.first(*args)
+    end
+
+  end
+
+
+
   class Session
+    include Capybarista::Finders
 
     attr_reader :basis
 
@@ -21,7 +56,33 @@ module Capybarista
     # Returns the list of inputs that require some form
     # of iteraction w/ the user.
     def all_fields(options = {})
-      fields = @basis.all(:xpath, "//*[self::input | self::textarea | self::select][not(./@type = 'submit' or ./@type = 'image' or ./@type = 'hidden' or ./@type='button')]", options)
+      fields = self.all(:xpath, "//*[self::input | self::textarea | self::select][not(./@type = 'submit' or ./@type = 'image' or ./@type = 'hidden' or ./@type='button')]", options)
+    end
+
+
+    def method_missing(name, *args, &block)
+      @basis.public_send(name, *args, &block)
+    end
+
+  end
+
+
+
+  class Element
+    include Capybarista::Finders
+
+    attr_reader :basis
+
+    def initialize(element)
+      @basis = element
+    end
+
+    def self.for(input)
+      if input.is_a? Capybarista::Element
+        return input
+      else
+        return Capybarista::Element.new input
+      end
     end
 
 
