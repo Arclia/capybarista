@@ -53,10 +53,11 @@ module Capybarista
     end
 
 
-    # Returns the list of inputs that require some form
-    # of iteraction w/ the user.
+
+
+    # Returns the list of fields that require user input.
     def all_fields(options = {})
-      fields = self.all(:xpath, "//*[self::input | self::textarea | self::select][not(./@type = 'submit' or ./@type = 'image' or ./@type = 'hidden' or ./@type='button')]", options)
+      self.all(:xpath, ".//*[self::input | self::textarea | self::select][not(./@type = 'submit' or ./@type = 'image' or ./@type = 'hidden' or ./@type='button')]", options)
     end
 
 
