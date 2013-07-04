@@ -1,4 +1,6 @@
 
+require 'capybarista/extensions'
+
 module Capybarista
 
   module Finders
@@ -37,6 +39,7 @@ module Capybarista
 
   class Session
     include Capybarista::Finders
+    include Capybarista::Extensions::Session
 
     attr_reader :basis
 
@@ -59,11 +62,6 @@ module Capybarista
     end
 
 
-    # Returns the list of fields that require user input.
-    def all_fields(options = {})
-      self.all(:xpath, ".//*[self::input | self::textarea | self::select][not(./@type = 'submit' or ./@type = 'image' or ./@type = 'hidden' or ./@type='button')]", options)
-    end
-
 
     def method_missing(name, *args, &block)
       @basis.public_send(name, *args, &block)
@@ -75,17 +73,20 @@ module Capybarista
 
   class Element
     include Capybarista::Finders
+    include Capybarista::Extensions::Element
 
-    attr_reader :basis
+    attr_reader :basis, :session
 
-    def initialize(element)
-      @basis = element
+    def initialize(element, session)
+      @basis   = element
+      @session = session
     end
 
-    def self.for(input)
+    def self.for(input, session = nil)
       if input.is_a? Capybarista::Element
         return input
       else
+        session ||= Capybarista::Session.new(input.session)
         return Capybarista::Element.new input
       end
     end
@@ -97,6 +98,7 @@ module Capybarista
       end
       input
     end
+
 
 
     def method_missing(name, *args, &block)
