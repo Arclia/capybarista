@@ -53,6 +53,10 @@ module Capybarista
     end
 
 
+    def within(input, *args, &block)
+      input = Capybarista::Element.unwrap(input)
+      @basis.within(input, *args, &block)
+    end
 
 
     # Returns the list of fields that require user input.
@@ -84,6 +88,14 @@ module Capybarista
       else
         return Capybarista::Element.new input
       end
+    end
+
+
+    def self.unwrap(input)
+      while input.is_a? Capybarista::Element
+        input = input.basis
+      end
+      input
     end
 
 
