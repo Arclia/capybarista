@@ -1,18 +1,33 @@
 
 require 'capybara'
 
+require 'logbert'
+
 module Capybarista
 
   module Extensions
+    LOG = Logbert[self]
+
+
+    def self.applied?
+      @applied
+    end
 
     def self.apply!
 
-      Capybara::Session.class_eval do
-        include Capybarista::Extensions::Session
-      end
+      if applied?
+        LOG.debug "Capybarista extensions have already been applied"
+      else
+        Capybara::Session.class_eval do
+          include Capybarista::Extensions::Session
+        end
 
-      Capybara::Node::Element.class_eval do
-        include Capybarista::Extensions::Element
+        Capybara::Node::Element.class_eval do
+          include Capybarista::Extensions::Element
+        end
+
+        @applied = true
+        LOG.warning "Capybara::Session and Capybara::Node::Element have been monkey-patched w/ the Capybarista extensions"
       end
 
     end
