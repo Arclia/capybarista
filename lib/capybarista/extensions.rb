@@ -37,6 +37,19 @@ module Capybarista
         s.within(self){ yield s }
       end
 
+
+      # Returns 0 or more labels for the current element
+      def labels
+        id = self[:id]
+        id ? session.all(:xpath, "//label[@for='#{id}']") : []        
+      end
+
+      # Returns the first label for the current element, or
+      # nil if no label exists
+      def label
+        labels.first
+      end
+
     end
 
   end
