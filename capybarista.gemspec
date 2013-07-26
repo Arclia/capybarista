@@ -10,8 +10,9 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
 
 
-  # TODO: We'll probably be fine w/ capybara 2.x as well
+  # TODO: Someday, we should add support for Capybara 2.x
   s.add_dependency "capybara", "~> 1.1"
+  s.add_dependency "xpath", "~> 0.1.4"
 
   s.add_dependency "logbert", "~> 0.6.4"
 end
