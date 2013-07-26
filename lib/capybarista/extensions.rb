@@ -58,13 +58,33 @@ module Capybarista
       # Returns 0 or more labels for the current element
       def all_labels
         id = self[:id]
-        id ? session.all(:xpath, "//label[@for='#{id}']") : []        
+        if id
+          query = Capybarista::Queries::XPath.labels_for_id(id)
+          return session.all(:xpath, query)
+        else
+          return []
+        end
       end
 
-      # Returns the first label for the current element, or
-      # nil if no label exists
+
       def find_label
-        labels.first
+        id = self[:id]
+        if id
+          query = Capybarista::Queries::XPath.labels_for_id(id)
+          return session.find(:xpath, query)
+        else
+          raise Capybara::ElementNotFound, "The element has no labels"
+        end
+      end
+
+      def first_label
+        id = self[:id]
+        if id
+          query = Capybarista::Queries::XPath.labels_for_id(id)
+          return session.first(:xpath, query)
+        else
+          return nil
+        end
       end
 
     end

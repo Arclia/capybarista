@@ -20,7 +20,7 @@ module Capybarista
 
 
       def self.labels_for_id(id)
-        "//label[@for=#{string_literal(id)}]"
+        "//label[@for=#{string(id)}]"
       end
 
     end
