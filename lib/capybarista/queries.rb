@@ -17,7 +17,10 @@ module Capybarista
       end
 
 
-
+      # Queries returns all fields that accept user input
+      def self.all_fields
+        ".//*[self::input | self::textarea | self::select][not(./@type = 'submit' or ./@type = 'image' or ./@type = 'hidden' or ./@type='button')]"
+      end
 
       def self.labels_for_id(id)
         "//label[@for=#{string(id)}]"
