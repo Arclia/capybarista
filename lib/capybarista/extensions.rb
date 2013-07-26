@@ -63,7 +63,7 @@ module Capybarista
 
 
       # Returns 0 or more labels for the current element
-      def all_labels
+      def labels
         id = self[:id]
         if id
           query = Capybarista::Queries::XPath.labels_for_id(id)
@@ -74,7 +74,9 @@ module Capybarista
       end
 
 
-      def find_label
+      # Attempts to find the label for the current element.
+      # If no label exists, then raise Capybara::ElementNotFound
+      def label!
         id = self[:id]
         if id
           query = Capybarista::Queries::XPath.labels_for_id(id)
@@ -84,7 +86,10 @@ module Capybarista
         end
       end
 
-      def first_label
+
+      # Attempts to find the label for the current element.
+      # If no label exists, then return nil.
+      def label
         id = self[:id]
         if id
           query = Capybarista::Queries::XPath.labels_for_id(id)
