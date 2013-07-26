@@ -35,7 +35,7 @@ module Capybarista
     end
 
 
-    module Session
+    module Base
 
       # Returns the list of fields that require user input.
       def all_fields(options = {})
@@ -45,8 +45,15 @@ module Capybarista
     end
 
 
+    module Session
+      include Base
+
+    end
+
+
 
     module Element
+      include Base
 
       # Syntactic sugar.  Yum!
       def scoped
