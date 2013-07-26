@@ -1,6 +1,8 @@
 
 require 'capybara'
 
+require 'capybarista/queries'
+
 require 'logbert'
 
 module Capybarista
@@ -54,18 +56,19 @@ module Capybarista
 
 
       # Returns 0 or more labels for the current element
-      def labels
+      def all_labels
         id = self[:id]
         id ? session.all(:xpath, "//label[@for='#{id}']") : []        
       end
 
       # Returns the first label for the current element, or
       # nil if no label exists
-      def label
+      def find_label
         labels.first
       end
 
     end
+
 
   end
 

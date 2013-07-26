@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'capybarista'
-  s.version     = '0.0.2'
+  s.version     = '0.1.0'
   s.date        = '2013-07-02'
   s.summary     = "Useful extensions for Capybara"
   s.description = "Useful extensions for Capybara"
