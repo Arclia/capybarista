@@ -107,6 +107,15 @@ module Capybarista
         Capybarista::UniqueXPath.for(self)
       end
 
+      def inner_html
+        session.evaluate_script %Q{function(){ var result = document.evaluate("#{unique_xpath}", document, null, XPathResult.ANY_TYPE, null ).iterateNext(); if(result) { return result.innerHTML; } }(); }
+      end
+
+
+      def outer_html
+        session.evaluate_script %Q{function(){ var result = document.evaluate("#{unique_xpath}", document, null, XPathResult.ANY_TYPE, null ).iterateNext(); if(result) { return result.outerHTML; } }(); }
+      end
+
     end
 
 
