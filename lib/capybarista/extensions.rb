@@ -116,6 +116,11 @@ module Capybarista
         session.evaluate_script %Q{function(){ var result = document.evaluate("#{unique_xpath}", document, null, XPathResult.ANY_TYPE, null ).iterateNext(); if(result) { return result.outerHTML; } }(); }
       end
 
+
+      def highlight
+        session.execute_script %Q{(function(){ var result = document.evaluate("#{unique_xpath}", document, null, XPathResult.ANY_TYPE, null ).iterateNext(); if(result) { return result.style.backgroundColor = "yellow"; } }()); }
+      end
+
     end
 
 
