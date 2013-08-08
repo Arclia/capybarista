@@ -118,7 +118,7 @@ module Capybarista
 
 
       def highlight
-        session.execute_script %Q{(function(){ var result = document.evaluate("#{unique_xpath}", document, null, XPathResult.ANY_TYPE, null ).iterateNext(); if(result) { return result.style.backgroundColor = "yellow"; } }()); }
+        session.execute_script %Q{(function(){ var result = document.evaluate("#{unique_xpath}", document, null, XPathResult.ANY_TYPE, null ).iterateNext(); if(result) { var old_color = result.style.backgroundColor; result.style.backgroundColor = "yellow"; setTimeout(function(){ result.style.backgroundColor = old_color; }, 1000); } }()); }
       end
 
     end
