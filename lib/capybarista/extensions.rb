@@ -2,6 +2,7 @@
 require 'capybara'
 
 require 'capybarista/queries'
+require 'capybarista/unique_xpath'
 
 require 'logbert'
 
@@ -97,6 +98,13 @@ module Capybarista
         else
           return nil
         end
+      end
+
+
+
+
+      def unique_xpath
+        Capybarista::UniqueXPath.for(self)
       end
 
     end
