@@ -62,12 +62,31 @@ module Capybarista
         s.within(self){ yield s }
       end
 
+      # Returns a map containing only the specified attributes.
+      # If the element does not contain an attribute, then its
+      # key/value pairing will be omitted.
+      #
+      # FIXME: This methods filters attributes that are equal
+      #        to the empty string :-(
+      def filtered_attributes(*keys)
+        retval = {}
+
+        keys.each do |k|
+          value = self[k]
+          if value and not value.empty?
+            retval[k] = value
+          end
+        end
+
+        return retval
+      end
 
       # Returns 0 or more labels for the current element
       def labels
-        id = self[:id]
-        if id
-          query = Capybarista::Queries::XPath.labels_for_id(id)
+        ids = filtered_attributes(:id, :name).values
+
+        if ids.any?
+          query = Capybarista::Queries::XPath.labels_for(*ids)
           return session.all(:xpath, query)
         else
           return []
@@ -78,9 +97,10 @@ module Capybarista
       # Attempts to find the label for the current element.
       # If no label exists, then raise Capybara::ElementNotFound
       def label!
-        id = self[:id]
-        if id
-          query = Capybarista::Queries::XPath.labels_for_id(id)
+        ids = filtered_attributes(:id, :name).values
+
+        if ids.any?
+          query = Capybarista::Queries::XPath.labels_for(*ids)
           return session.find(:xpath, query)
         else
           raise Capybara::ElementNotFound, "The element has no labels"
@@ -91,9 +111,9 @@ module Capybarista
       # Attempts to find the label for the current element.
       # If no label exists, then return nil.
       def label
-        id = self[:id]
-        if id
-          query = Capybarista::Queries::XPath.labels_for_id(id)
+        ids = filtered_attributes(:id, :name).values
+        if ids.any?
+          query = Capybarista::Queries::XPath.labels_for(*ids)
           return session.first(:xpath, query)
         else
           return nil
