@@ -49,6 +49,12 @@ module Capybarista
     module Session
       include Base
 
+      def field_and_position
+        all_fields(visible:true).map do |f|
+          position = f.top_left
+        end
+      end
+
     end
 
 
@@ -120,6 +126,35 @@ module Capybarista
         end
       end
 
+
+
+      # def sorted_fields
+      #   field_and_position.sort_by ...... fix me 
+      # end
+
+      def top_left
+        long_function = %Q{
+          (
+            function(){
+              var obj = document.evaluate("#{unique_xpath}", document, null, XPathResult.ANY_TYPE, null ).iterateNext(); 
+              if(obj) { 
+                return(function findPos(obj) {
+                  var curleft = curtop = 0;
+                  if (obj && obj.offsetParent) {
+                    do {
+                        curleft += obj.offsetLeft;
+                        curtop += obj.offsetTop;
+                    } while (obj = obj.offsetParent);
+                  }
+                  return [curleft,curtop];
+                }());
+              };
+            }()
+          );
+       }
+        long_string = long_function.delete("\n")
+        session.evaluate_script(long_string)
+      end
 
 
 
