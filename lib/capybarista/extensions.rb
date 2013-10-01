@@ -137,9 +137,9 @@ module Capybarista
           (
             function(){
               var obj = document.evaluate("#{unique_xpath}", document, null, XPathResult.ANY_TYPE, null ).iterateNext(); 
-              if(obj) { 
-                return(function findPos(obj) {
-                  var curleft = curtop = 0;
+                if(obj) { 
+                
+                  var curleft = 0; var curtop = 0;
                   if (obj && obj.offsetParent) {
                     do {
                         curleft += obj.offsetLeft;
@@ -147,8 +147,7 @@ module Capybarista
                     } while (obj = obj.offsetParent);
                   }
                   return [curleft,curtop];
-                }());
-              };
+                };
             }()
           );
        }
