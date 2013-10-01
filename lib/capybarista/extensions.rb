@@ -50,13 +50,11 @@ module Capybarista
       include Base
 
       def field_and_position
-        all_fields(visible:true).map do |f|
-          position = f.top_left
-        end
+        all_fields(visible:true).map{|f| {f: f, pos: f.top_left}  }
       end
-
     end
 
+# all_fields(visible:true).map do |f|
 
 
     module Element
