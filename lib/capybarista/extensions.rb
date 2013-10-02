@@ -49,12 +49,19 @@ module Capybarista
     module Session
       include Base
 
-      def field_and_position
-        all_fields(visible:true).map{|f| {f: f, pos: f.top_left}  }
+      #this method returns a list of labels that are sorted from bottom up, right to left
+      def new_label_list
+        fields = all_fields(visible:true).map{|f| {f: f, pos: f.top_left}  }
+        list_of_lists = fields.map{ |i| i[:pos] }
+        sorted_list = list_of_lists.sort {|item1, item2| item2[1]<=>item1[1]}
+        labels_list = Array.new
+        sorted_list.each do |item|
+          label = fields.find { |h| h[:pos] == item }[:f]
+          labels_list.push(label)    
+        end
+        labels_list
       end
     end
-
-# all_fields(visible:true).map do |f|
 
 
     module Element
@@ -123,12 +130,6 @@ module Capybarista
           return nil
         end
       end
-
-
-
-      # def sorted_fields
-      #   field_and_position.sort_by ...... fix me 
-      # end
 
       def top_left
         long_function = %Q{
