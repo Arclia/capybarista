@@ -49,8 +49,19 @@ module Capybarista
     module Session
       include Base
 
+      #this method returns a list of labels that are sorted from bottom up, right to left
+      def new_label_list
+        fields = all_fields(visible:true).map{|f| {f: f, pos: f.top_left}  }
+        list_of_lists = fields.map{ |i| i[:pos] }
+        sorted_list = list_of_lists.sort {|item1, item2| item2[1]<=>item1[1]}
+        labels_list = Array.new
+        sorted_list.each do |item|
+          label = fields.find { |h| h[:pos] == item }[:f]
+          labels_list.push(label)    
+        end
+        labels_list
+      end
     end
-
 
 
     module Element
@@ -120,6 +131,28 @@ module Capybarista
         end
       end
 
+      def top_left
+        long_function = %Q{
+          (
+            function(){
+              var obj = document.evaluate("#{unique_xpath}", document, null, XPathResult.ANY_TYPE, null ).iterateNext(); 
+                if(obj) { 
+                
+                  var curleft = 0; var curtop = 0;
+                  if (obj && obj.offsetParent) {
+                    do {
+                        curleft += obj.offsetLeft;
+                        curtop += obj.offsetTop;
+                    } while (obj = obj.offsetParent);
+                  }
+                  return [curleft,curtop];
+                };
+            }()
+          );
+       }
+        long_string = long_function.delete("\n")
+        session.evaluate_script(long_string)
+      end
 
 
 
