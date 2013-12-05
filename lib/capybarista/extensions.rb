@@ -177,6 +177,17 @@ module Capybarista
       end
 
 
+      def blur
+        script = %Q{ (function() { var target = #{ J.find_xpath(unique_xpath) }; if(target) { var evt = document.createEvent("MouseEvents"); evt.initMouseEvent("blur", true, true,window, 1, 1, 1, 1, 1, false, false, false, false, 0, target); target.dispatchEvent(evt); } })(); }
+        session.execute_script(script)
+      end
+
+
+      def focus
+        script = %Q{ (function() { var target = #{ J.find_xpath(unique_xpath) }; if(target) { var evt = document.createEvent("MouseEvents"); evt.initMouseEvent("focus", true, true,window, 1, 1, 1, 1, 1, false, false, false, false, 0, target); target.dispatchEvent(evt); } })(); }
+        session.execute_script(script)
+      end
+
 
     end
 
