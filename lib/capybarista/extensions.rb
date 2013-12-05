@@ -3,6 +3,7 @@ require 'capybara'
 
 require 'capybarista/queries'
 require 'capybarista/unique_xpath'
+require 'capybarista/javascript'
 
 require 'logbert'
 
@@ -11,6 +12,7 @@ module Capybarista
   module Extensions
     LOG = Logbert[self]
 
+    J = Capybarista::Javascript
 
     def self.applied?
       @applied
@@ -161,18 +163,20 @@ module Capybarista
       end
 
       def inner_html
-        session.evaluate_script %Q{(function(){ var result = document.evaluate("#{unique_xpath}", document, null, XPathResult.ANY_TYPE, null ).iterateNext(); if(result) { return result.innerHTML; } }()); }
+        session.evaluate_script %Q{(function(){ var result = #{ J.find_xpath(unique_xpath) }; if(result) { return result.innerHTML; } }()); }
       end
 
 
       def outer_html
-        session.evaluate_script %Q{(function(){ var result = document.evaluate("#{unique_xpath}", document, null, XPathResult.ANY_TYPE, null ).iterateNext(); if(result) { return result.outerHTML; } }()); }
+        session.evaluate_script %Q{(function(){ var result = #{ J.find_xpath(unique_xpath) }; if(result) { return result.outerHTML; } }()); }
       end
 
 
       def highlight
-        session.execute_script %Q{(function(){ var result = document.evaluate("#{unique_xpath}", document, null, XPathResult.ANY_TYPE, null ).iterateNext(); if(result) { var old_color = result.style.backgroundColor; result.style.backgroundColor = "yellow"; setTimeout(function(){ result.style.backgroundColor = old_color; }, 1000); } }()); }
+        session.execute_script %Q{(function(){ var result = #{ J.find_xpath(unique_xpath) }; if(result) { var old_color = result.style.backgroundColor; result.style.backgroundColor = "yellow"; setTimeout(function(){ result.style.backgroundColor = old_color; }, 1000); } }()); }
       end
+
+
 
     end
 
