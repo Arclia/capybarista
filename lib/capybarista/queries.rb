@@ -10,10 +10,18 @@ module Capybarista
     module XPath
 
 
-      def self.string(value)
-        # The underlying API changes betw/ versions
-        # 0.1.4 and 2.0.0 .  So, let's wrap the method.
-        ::XPath::Expression::StringLiteral.new(value.to_s).to_xpath
+      if defined? ::XPath::Expression.new
+        def self.string(value)
+          # The underlying API changes betw/ versions
+          # 0.1.4 and 2.0.0 .  So, let's wrap the method.
+          ::XPath::Expression.new(value.to_s).to_xpath
+        end
+      else
+        def self.string(value)
+          # The underlying API changes betw/ versions
+          # 0.1.4 and 2.0.0 .  So, let's wrap the method.
+          ::XPath::Expression::StringLiteral.new(value.to_s).to_xpath
+        end
       end
 
 
@@ -32,4 +40,3 @@ module Capybarista
   end
 
 end
-

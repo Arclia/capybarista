@@ -11,8 +11,8 @@ Gem::Specification.new do |s|
 
 
   # TODO: Someday, we should add support for Capybara 2.x
-  s.add_dependency "capybara", "~> 1.1"
-  s.add_dependency "xpath", "~> 0.1.4"
+  s.add_dependency "capybara", "~> 2.2.1"
+  s.add_dependency "xpath", "~> 2.0"
 
   s.add_dependency "logbert", "~> 0.6.4"
 end
