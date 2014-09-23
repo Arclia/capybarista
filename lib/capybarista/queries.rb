@@ -9,21 +9,18 @@ module Capybarista
 
     module XPath
 
-
-      if defined? ::XPath::Expression.new
-        def self.string(value)
-          # The underlying API changes betw/ versions
-          # 0.1.4 and 2.0.0 .  So, let's wrap the method.
-          ::XPath::Expression.new(value.to_s).to_xpath
-        end
-      else
+      if defined? ::XPath::Expression::StringLiteral.new
         def self.string(value)
           # The underlying API changes betw/ versions
           # 0.1.4 and 2.0.0 .  So, let's wrap the method.
           ::XPath::Expression::StringLiteral.new(value.to_s).to_xpath
         end
+      else
+        def self.string(value)
+          # supported by version 2.2.1 of capybara (xpath version 2.0)
+          ::XPath::Renderer.new(String).string_literal(value)
+        end
       end
-
 
       # Queries returns all fields that accept user input
       def self.all_fields
