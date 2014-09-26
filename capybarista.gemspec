@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'capybarista'
-  s.version     = '1.0.1'
+  s.version     = '1.0.2'
   s.date        = '2013-07-02'
   s.summary     = "Useful extensions for Capybara"
   s.description = "Useful extensions for Capybara"
@@ -12,6 +12,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "capybara", "> 1.1"
 
-  s.add_dependency "logbert", "~> 0.6.4"
+  s.add_dependency "logbert", "~> 1.0"
 end
 
